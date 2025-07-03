@@ -1,12 +1,12 @@
 #include "freertos/FreeRTOS.h"
+#include "tasks.h"
 
 
 void app_main(void)
 {
     printf("Hello world!\n");
     
-    // Initialize the console
-    printf("Console initialized.\n");
+    create_startup_tasks();
     
     // Main loop
     while (1) {
