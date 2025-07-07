@@ -6,6 +6,7 @@ set(EXTRA_COMPONENT_DIRS
     ${CMAKE_SOURCE_DIR}/src/main
     ${CMAKE_SOURCE_DIR}/src/os
     ${CMAKE_SOURCE_DIR}/src/managers/mincli
+    ${CMAKE_SOURCE_DIR}/src/managers/uart
 )
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
