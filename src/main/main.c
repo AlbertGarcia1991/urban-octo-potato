@@ -1,17 +1,18 @@
 #include "freertos/FreeRTOS.h"
+#include "startup.h"
+#include "startup.h"
 #include "tasks.h"
 
 
 void app_main(void)
 {
-    printf("Hello world!\n");
+    printf("Hardware started\n");
     
+    run_startup_procedures();
     create_startup_tasks();
     
     // Main loop
     while (1) {
-        // Simulate some work
-        printf("Running main loop...\n");
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        vTaskDelay(pdMS_TO_TICKS(50));
     }
 }

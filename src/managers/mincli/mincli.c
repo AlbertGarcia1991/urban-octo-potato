@@ -1,30 +1,10 @@
-#include "driver/uart.h"
+#include "mincli.h"
+#include <stdio.h>
+#include <string.h>
+#include <stdint.h>
+#include "freertos/FreeRTOS.h"
 
-#define ASCII_BACKSPACE 0x08
-#define ASCII_DEL       0x7F
-#define CLI_BUF_SIZE 128
-
-
-void setup_uart_console() {
-    const uart_config_t uart_config = {
-        .baud_rate = 115200,
-        .data_bits = UART_DATA_8_BITS,
-        .parity    = UART_PARITY_DISABLE,
-        .stop_bits = UART_STOP_BITS_1,
-        .flow_ctrl = UART_HW_FLOWCTRL_DISABLE
-    };
-
-    // Install UART driver for interrupt-driven reads
-    ESP_ERROR_CHECK(uart_driver_install(UART_NUM_0, 256, 0, 0, NULL, 0));
-    ESP_ERROR_CHECK(uart_param_config(UART_NUM_0, &uart_config));
-    ESP_ERROR_CHECK(uart_set_pin(UART_NUM_0, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE,
-                                 UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE));
-
-    // Set up VFS
-    esp_vfs_dev_uart_use_driver(UART_NUM_0);
-}
-
-void cli_task(void *arg) {
+void cli_task() {
     char line[CLI_BUF_SIZE];
     int length = 0;
     int cursor = 0;
