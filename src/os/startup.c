@@ -5,6 +5,7 @@
 #include "esp_vfs_dev.h"
 #include "freertos/FreeRTOS.h"
 
+// TODO: Move setup_uart_console() to UART driver component
 void setup_uart_console() {
     const uart_config_t uart_config = {
         .baud_rate = 115200,
