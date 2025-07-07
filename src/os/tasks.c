@@ -4,7 +4,6 @@
 #include "tasks.h"
 #include "mincli.h"
 
-// TODO: Set hardcoded values as defined constants
 void create_startup_tasks() {
-    xTaskCreate(cli_task, "cli_task", 4096, NULL, 5, NULL);
+    xTaskCreate(cli_task, "cli_task", CLI_TASK_STACK_SIZE, NULL, CLI_TASK_PRIORITY, NULL);
 }
