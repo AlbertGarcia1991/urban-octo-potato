@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "tasks.h": "c"
+        ".fantomasignore": "ignore",
+        "tasks.h": "c",
+        "freertos.h": "c"
     }
 }

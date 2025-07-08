@@ -1,5 +1,5 @@
-#ifndef MINCLI_H
-#define MINCLI_H
+#ifndef CLI_H
+#define CLI_H
 
 #define ASCII_BACKSPACE 0x08
 #define ASCII_DEL       0x7F

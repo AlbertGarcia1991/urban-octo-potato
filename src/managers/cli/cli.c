@@ -1,4 +1,4 @@
-#include "mincli.h"
+#include "cli.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
