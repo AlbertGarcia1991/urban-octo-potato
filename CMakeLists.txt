@@ -8,6 +8,7 @@ set(EXTRA_COMPONENT_DIRS
     ${CMAKE_SOURCE_DIR}/src/managers/cli
     ${CMAKE_SOURCE_DIR}/src/managers/uart
     ${CMAKE_SOURCE_DIR}/src/managers/nvs
+    ${CMAKE_SOURCE_DIR}/src/managers/ble
 )
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
