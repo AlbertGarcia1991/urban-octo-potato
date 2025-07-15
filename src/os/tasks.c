@@ -9,7 +9,12 @@ void create_startup_tasks() {
     xTaskCreate(cli_task, "cli_task", CLI_TASK_STACK_SIZE, NULL, CLI_TASK_PRIORITY, NULL);
 }
 
-void ble_task()
+void ble_client_task()
+{
+    nimble_port_run(); // This function will return only when nimble_port_stop() is executed
+}
+
+void ble_server_task()
 {
     nimble_port_run(); // This function will return only when nimble_port_stop() is executed
 }

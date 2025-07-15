@@ -3,16 +3,20 @@
 #include "host/ble_hs.h"                   // NimBLE host stack API
 #include "services/gap/ble_svc_gap.h"      // Generic Access Profile (GAP) service
 #include "services/gatt/ble_svc_gatt.h"    // Generic Attribute Profile (GATT) service
-#include "ble.h"                           // Project-specific BLE header
+#include "ble_server.h"                    // Project-specific BLE header
 #include "tasks.h"                         // Project-specific task management
 
 /**
- * @file ble.c
- * @brief BLE (Bluetooth Low Energy) initialization and service definition for GymHand device.
+ * @file ble_server.c
+ * @brief BLE (Bluetooth Low Energy) SERVER initialization and service definition for GymHand device.
  *
  * This file demonstrates how to set up a BLE GATT server, advertise it, and handle basic read/write operations
  * using the NimBLE stack on ESP32. It is heavily commented for educational purposes.
+ * 
+ * By server, we mean that this device can be discovered and connected to by BLE clients (like smartphones).
+ * The server can expose services and characteristics that clients can read from or write to.
  */
+
 
 // Global variable to hold the BLE address type (public or random)
 uint8_t ble_addr_type;
@@ -163,14 +167,14 @@ void ble_app_on_sync(void)
  * It sets up the BLE device name, initializes GAP and GATT services, registers the GATT table,
  * and starts the NimBLE host task.
  */
-void ble_nimble_init() {
+void ble_nimble_server_init() {
     // Requires nvs_flash_init() to be called before this
 
     // Initialize the NimBLE host and controller stack
     nimble_port_init();
 
     // Set the BLE device name (visible to clients)
-    ble_svc_gap_device_name_set("GymHand Device");
+    ble_svc_gap_device_name_set("GymHand Device - SERVER");
 
     // Initialize GAP and GATT services (standard BLE services)
     ble_svc_gap_init();
@@ -184,7 +188,7 @@ void ble_nimble_init() {
     ble_hs_cfg.sync_cb = ble_app_on_sync;
 
     // Start the NimBLE host task (runs BLE protocol stack)
-    nimble_port_freertos_init(ble_task);
+    nimble_port_freertos_init(ble_server_task);
 
-    printf("BLE NimBLE initialized\n");
+    printf("BLE NimBLE SERVER initialized\n");
 }
