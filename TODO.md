@@ -13,3 +13,5 @@
             * Add TAG to all c files and replace printf with ESP_LOG
             * Clean imports
             * Refactor CMakeLists files following ESP build documentation
+    * NULL
+        * Git, static analisis, CI/CD, and documentation (clang format)
