@@ -4,4 +4,4 @@
 void ble_nimble_server_init();
 void ble_app_advertise(void);
 
-#endif
+#endif // BLE_SERVER_H

@@ -1,17 +1,16 @@
 #include "freertos/FreeRTOS.h"
-#include "startup.h"
+#include "esp_log.h"
 #include "startup.h"
 #include "tasks.h"
 
+static const char *TAG = "MAIN";
 
 void app_main(void)
 {
-    printf("Hardware started\n");
-    
+    ESP_LOGI(TAG, "Hardware started");
     run_startup_procedures();
     create_startup_tasks();
-    
-    // Main loop
+
     while (1) {
         vTaskDelay(pdMS_TO_TICKS(50));
     }

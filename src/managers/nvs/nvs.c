@@ -1,8 +1,11 @@
+#include "esp_log.h"
 #include "nvs_flash.h"
 #include <stdio.h>
 #include <string.h>
 
 #define NVS_NAMESPACE "storage"
+
+static const char *TAG = "NVS";
 
 // Initialize NVS
 esp_err_t nvs_manager_init(void) {
@@ -12,7 +15,7 @@ esp_err_t nvs_manager_init(void) {
         err = nvs_flash_init();
     }
     if (err != ESP_OK) {
-        printf("NVS Flash init failed: %s", esp_err_to_name(err));
+        ESP_LOGE(TAG, "NVS Flash init failed: %s", esp_err_to_name(err));
     }
     return err;
 }

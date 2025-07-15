@@ -9,9 +9,6 @@
         * Measure RSSI continuously and benchmark distance estimation
         * Implement ToF PING and benchmark distance estimation
         * Clean and refactor code before BLE branch merge
-            * Include organization (h/c and order)
-            * Add TAG to all c files and replace printf with ESP_LOG
-            * Clean imports
             * Refactor CMakeLists files following ESP build documentation
     * NULL
         * Git, static analisis, CI/CD, and documentation (clang format)

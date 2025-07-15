@@ -1,11 +1,3 @@
-#include "nimble/nimble_port.h"            // NimBLE porting layer for ESP32
-#include "nimble/nimble_port_freertos.h"   // NimBLE FreeRTOS integration
-#include "host/ble_hs.h"                   // NimBLE host stack API
-#include "services/gap/ble_svc_gap.h"      // Generic Access Profile (GAP) service
-#include "services/gatt/ble_svc_gatt.h"    // Generic Attribute Profile (GATT) service
-#include "ble_server.h"                    // Project-specific BLE header
-#include "tasks.h"                         // Project-specific task management
-
 /**
  * @file ble_server.c
  * @brief BLE (Bluetooth Low Energy) SERVER initialization and service definition for GymHand device.
@@ -16,11 +8,18 @@
  * By server, we mean that this device can be discovered and connected to by BLE clients (like smartphones).
  * The server can expose services and characteristics that clients can read from or write to.
  */
+#include "ble_server.h"
+#include "esp_log.h"
+#include "host/ble_hs.h"
+#include "nimble/nimble_port.h"
+#include "nimble/nimble_port_freertos.h"
+#include "services/gap/ble_svc_gap.h"
+#include "services/gatt/ble_svc_gatt.h"
+#include "tasks.h"
 
+static const char *TAG = "BLE_SERVER";
 
-// Global variable to hold the BLE address type (public or random)
 uint8_t ble_addr_type;
-
 
 /**
  * @brief GAP event handler.
@@ -96,7 +95,7 @@ void ble_app_advertise(void) {
  */
 static int device_write(uint16_t conn_handle, uint16_t attr_handle, struct ble_gatt_access_ctxt *ctxt, void *arg) {
     // Print the data received from the client
-    printf("Data from the client: %.*s\n", ctxt->om->om_len, ctxt->om->om_data);
+    ESP_LOGI(TAG, "Data from the client: %.*s\n", ctxt->om->om_len, ctxt->om->om_data);
     return 0;
 }
 
@@ -190,5 +189,5 @@ void ble_nimble_server_init() {
     // Start the NimBLE host task (runs BLE protocol stack)
     nimble_port_freertos_init(ble_server_task);
 
-    printf("BLE NimBLE SERVER initialized\n");
+    ESP_LOGI(TAG, "BLE NimBLE SERVER initialized\n");
 }

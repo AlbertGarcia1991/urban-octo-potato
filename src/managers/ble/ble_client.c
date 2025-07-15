@@ -1,18 +1,3 @@
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/event_groups.h"
-#include "esp_event.h"
-#include "esp_log.h"
-#include "esp_nimble_hci.h"
-#include "nimble/nimble_port.h"
-#include "nimble/nimble_port_freertos.h"
-#include "host/ble_hs.h"
-#include "services/gap/ble_svc_gap.h"
-#include "sdkconfig.h"
-#include "ble_client.h"                    // Project-specific BLE header
-#include "tasks.h"                         // Project-specific task management
-
 /**
  * @file ble_client.c
  * @brief BLE (Bluetooth Low Energy) CLIENT initialization and service definition for GymHand device.
@@ -23,9 +8,23 @@
  * By client, we mean that this device scans for and connects to BLE servers (like sensors or peripherals).
  * The client can discover services and characteristics exposed by servers and perform read or write operations on them.
  */
+#include "ble_client.h"                    // Project-specific BLE header
+#include <stdio.h>
+#include "esp_event.h"
+#include "esp_log.h"
+#include "esp_nimble_hci.h"
+#include "freertos/event_groups.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+#include "host/ble_hs.h"
+#include "nimble/nimble_port.h"
+#include "nimble/nimble_port_freertos.h"
+#include "services/gap/ble_svc_gap.h"
+#include "sdkconfig.h"
+#include "tasks.h"                         // Project-specific task management
 
-// Global variable to hold the BLE address type (public or random).
-// This is set during initialization and used for scanning and connecting.
+static const char *TAG = "BLE_CLIENT";
+
 uint8_t ble_addr_type;
 
 /**
@@ -61,7 +60,7 @@ static int ble_gap_event(struct ble_gap_event *event, void *arg)
             if (fields.name_len > 0)
             {
                 // Print the device name if present in the advertisement
-                printf("Name: %.*s\n", fields.name_len, fields.name);
+                ESP_LOGI(TAG, "Name: %.*s\n", fields.name_len, fields.name);
             }
             // Sometimes the name cannot be parsed, so the previous line may not print anything.
         }
@@ -85,7 +84,7 @@ void ble_app_scan(int32_t scan_timeout)
     if (scan_timeout <= 0) {
         scan_timeout = BLE_HS_FOREVER; // Default to forever if timeout is not specified
     }
-    printf("Start scanning ...\n");
+    ESP_LOGI(TAG, "Start scanning ...\n");
 
     // Set up scan parameters
     struct ble_gap_disc_params disc_params;
@@ -99,7 +98,7 @@ void ble_app_scan(int32_t scan_timeout)
     // Start scanning. The ble_gap_event callback will be called for each discovered device.
     ble_gap_disc(ble_addr_type, scan_timeout, &disc_params, ble_gap_event, NULL);
 
-    printf("Scan finished\n");
+    ESP_LOGI(TAG, "Scan finished\n");
 }
 
 /**
@@ -138,5 +137,5 @@ void ble_nimble_client_init() {
     // Start the NimBLE host task (runs BLE protocol stack)
     nimble_port_freertos_init(ble_client_task);
 
-    printf("BLE NimBLE CLIENT initialized\n");
+    ESP_LOGI(TAG, "BLE NimBLE CLIENT initialized\n");
 }

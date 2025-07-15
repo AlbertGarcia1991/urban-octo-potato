@@ -11,4 +11,4 @@ esp_err_t nvs_manager_read_str(const char *key, char *out_value, size_t max_len)
 esp_err_t nvs_manager_erase_key(const char *key);
 esp_err_t nvs_manager_erase_all(void);
 
-#endif
+#endif // NVS_H

@@ -1,9 +1,12 @@
 #include "cli.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdint.h>
+#include "esp_log.h"
 #include "freertos/FreeRTOS.h"
 #include "ble_client.h"
+
+static const char *TAG = "CLI";
 
 void cli_task() {
     char line[CLI_BUF_SIZE];

@@ -3,4 +3,4 @@
 
 void setup_uart_console();
 
-#endif
+#endif // UART_H
