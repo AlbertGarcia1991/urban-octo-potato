@@ -8,7 +8,5 @@
         * Connect 1 client to 1 server and subscribe to the latter notify channel
         * Measure RSSI continuously and benchmark distance estimation
         * Implement ToF PING and benchmark distance estimation
-        * Clean and refactor code before BLE branch merge
-            * Refactor CMakeLists files following ESP build documentation
     * NULL
         * Git, static analisis, CI/CD, and documentation (clang format)

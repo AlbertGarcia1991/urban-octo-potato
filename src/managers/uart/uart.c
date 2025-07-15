@@ -1,12 +1,24 @@
+/**
+ * @file uart.c
+ * @brief UART console initialization for GymHand firmware.
+ *
+ * This file sets up the UART peripheral for console I/O, enabling communication
+ * with the device over serial.
+ */
+
 #include "uart.h"
-#include <stdio.h>
 #include "driver/uart.h"
 #include "esp_log.h"
 #include "esp_vfs_dev.h"
 
 static const char *TAG = "UART";
 
-void setup_uart_console() {
+/**
+ * @brief Initialize UART console for serial communication.
+ *
+ * This function configures the UART peripheral and installs the driver.
+ */
+void setup_uart_console(void) {
     const uart_config_t uart_config = {
         .baud_rate = 115200,
         .data_bits = UART_DATA_8_BITS,

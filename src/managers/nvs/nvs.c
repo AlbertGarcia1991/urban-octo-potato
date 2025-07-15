@@ -1,3 +1,11 @@
+/**
+ * @file nvs.c
+ * @brief Non-Volatile Storage (NVS) management for GymHand firmware.
+ *
+ * This file provides functions to initialize NVS and read/write/erase integer and string values.
+ * It wraps ESP-IDF NVS APIs for easier use in the application.
+ */
+
 #include "esp_log.h"
 #include "nvs_flash.h"
 #include <stdio.h>
@@ -7,7 +15,11 @@
 
 static const char *TAG = "NVS";
 
-// Initialize NVS
+/**
+ * @brief Initialize NVS storage.
+ *
+ * @return ESP_OK on success, error code otherwise.
+ */
 esp_err_t nvs_manager_init(void) {
     esp_err_t err = nvs_flash_init();
     if (err == ESP_ERR_NVS_NO_FREE_PAGES || err == ESP_ERR_NVS_NEW_VERSION_FOUND) {
@@ -20,7 +32,13 @@ esp_err_t nvs_manager_init(void) {
     return err;
 }
 
-// Write integer value to NVS
+/**
+ * @brief Write an integer value to NVS.
+ *
+ * @param key   Key string.
+ * @param value Integer value to store.
+ * @return ESP_OK on success, error code otherwise.
+ */
 esp_err_t nvs_manager_write_int(const char *key, int32_t value) {
     nvs_handle_t handle;
     esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READWRITE, &handle);
@@ -33,7 +51,13 @@ esp_err_t nvs_manager_write_int(const char *key, int32_t value) {
     return err;
 }
 
-// Read integer value from NVS
+/**
+ * @brief Read an integer value from NVS.
+ *
+ * @param key       Key string.
+ * @param out_value Pointer to store the read value.
+ * @return ESP_OK on success, error code otherwise.
+ */
 esp_err_t nvs_manager_read_int(const char *key, int32_t *out_value) {
     nvs_handle_t handle;
     esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READONLY, &handle);
@@ -44,7 +68,13 @@ esp_err_t nvs_manager_read_int(const char *key, int32_t *out_value) {
     return err;
 }
 
-// Write string value to NVS
+/**
+ * @brief Write a string value to NVS.
+ *
+ * @param key   Key string.
+ * @param value String value to store.
+ * @return ESP_OK on success, error code otherwise.
+ */
 esp_err_t nvs_manager_write_str(const char *key, const char *value) {
     nvs_handle_t handle;
     esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READWRITE, &handle);
@@ -57,7 +87,14 @@ esp_err_t nvs_manager_write_str(const char *key, const char *value) {
     return err;
 }
 
-// Read string value from NVS
+/**
+ * @brief Read a string value from NVS.
+ *
+ * @param key       Key string.
+ * @param out_value Buffer to store the read string.
+ * @param max_len   Maximum buffer length.
+ * @return ESP_OK on success, error code otherwise.
+ */
 esp_err_t nvs_manager_read_str(const char *key, char *out_value, size_t max_len) {
     nvs_handle_t handle;
     esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READONLY, &handle);
@@ -78,7 +115,12 @@ esp_err_t nvs_manager_read_str(const char *key, char *out_value, size_t max_len)
     return err;
 }
 
-// Erase a key from NVS
+/**
+ * @brief Erase a key from NVS.
+ *
+ * @param key Key string to erase.
+ * @return ESP_OK on success, error code otherwise.
+ */
 esp_err_t nvs_manager_erase_key(const char *key) {
     nvs_handle_t handle;
     esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READWRITE, &handle);
@@ -91,7 +133,11 @@ esp_err_t nvs_manager_erase_key(const char *key) {
     return err;
 }
 
-// Erase all keys in the namespace
+/**
+ * @brief Erase all keys in the NVS namespace.
+ *
+ * @return ESP_OK on success, error code otherwise.
+ */
 esp_err_t nvs_manager_erase_all(void) {
     nvs_handle_t handle;
     esp_err_t err = nvs_open(NVS_NAMESPACE, NVS_READWRITE, &handle);

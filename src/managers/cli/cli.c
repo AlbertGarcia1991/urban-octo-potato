@@ -1,3 +1,11 @@
+/**
+ * @file cli.c
+ * @brief Command Line Interface (CLI) implementation for GymHand firmware.
+ *
+ * This file implements a simple CLI for interacting with the device over UART.
+ * It supports basic commands for device info, BLE scanning, and system restart.
+ */
+
 #include "cli.h"
 #include <stdint.h>
 #include <stdio.h>
@@ -8,7 +16,13 @@
 
 static const char *TAG = "CLI";
 
-void cli_task() {
+/**
+ * @brief CLI task entry point.
+ *
+ * This function runs an interactive command line interface over UART.
+ * It supports editing, command history, and basic device commands.
+ */
+void cli_task(void) {
     char line[CLI_BUF_SIZE];
     int length = 0;
     int cursor = 0;
@@ -30,7 +44,7 @@ void cli_task() {
                 break;
             }
 
-            // Escape sequence (e.g. arrow keys)
+            // Handle escape sequences (arrow keys)
             if (c == 0x1b) {  // ESC
                 char seq[2];
                 fread(&seq[0], 1, 1, stdin);  // should be '['
@@ -54,28 +68,25 @@ void cli_task() {
                 continue;
             }
 
+            // Handle backspace/delete
             if ((c == ASCII_BACKSPACE || c == ASCII_DEL) && cursor > 0) {
-                // Shift text left from cursor
                 memmove(&line[cursor - 1], &line[cursor], length - cursor);
                 cursor--;
                 length--;
 
-                // Redraw line
                 printf("\b");
                 fwrite(&line[cursor], 1, length - cursor, stdout);
                 printf(" ");
                 for (int i = 0; i <= (length - cursor); i++) printf("\b");
                 fflush(stdout);
             }
-
+            // Handle printable characters
             else if (c >= 32 && c <= 126 && length < CLI_BUF_SIZE - 1) {
-                // Insert character
                 memmove(&line[cursor + 1], &line[cursor], length - cursor);
                 line[cursor] = c;
                 length++;
                 cursor++;
 
-                // Print from insertion point to end
                 fwrite(&line[cursor - 1], 1, length - cursor + 1, stdout);
                 for (int i = 0; i < (length - cursor); i++) printf("\b");
                 fflush(stdout);
