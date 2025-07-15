@@ -5,5 +5,6 @@
 #define CLI_TASK_STACK_SIZE 4096
 
 void create_startup_tasks();
+void ble_task();
 
 #endif
