@@ -44,7 +44,7 @@ static int ble_gap_event(struct ble_gap_event *event, void *arg)
             event->disc.addr.val[2], event->disc.addr.val[3],
             event->disc.addr.val[4], event->disc.addr.val[5]);
         // addr_str now contains the MAC address as a string
-        ESP_LOGI("GAP", "GAP EVENT DISCOVERY: %s", addr_str);
+        ESP_LOGI("GAP", "GAP EVENT DISCOVERY: %s (%d)", addr_str, event->disc.rssi);
         ble_hs_adv_parse_fields(&fields, event->disc.data, event->disc.length_data);
         if (fields.name_len > 0)
         {
@@ -58,8 +58,11 @@ static int ble_gap_event(struct ble_gap_event *event, void *arg)
     return 0;
 }
 
-void ble_app_scan(void)
+void ble_app_scan(int32_t scan_timeout)
 {
+    if (scan_timeout <= 0) {
+        scan_timeout = BLE_HS_FOREVER; // Default to forever if timeout is not specified
+    }
     printf("Start scanning ...\n");
 
     struct ble_gap_disc_params disc_params;
@@ -70,14 +73,15 @@ void ble_app_scan(void)
     disc_params.filter_policy = 0;
     disc_params.limited = 0;
 
-    ble_gap_disc(ble_addr_type, BLE_HS_FOREVER, &disc_params, ble_gap_event, NULL);
+    ble_gap_disc(ble_addr_type, scan_timeout, &disc_params, ble_gap_event, NULL);
+
+    printf("Scan finished\n");
 }
 
 // The application
 void ble_app_on_sync(void)
 {
-    ble_hs_id_infer_auto(0, &ble_addr_type); // Determines the best address type automatically
-    ble_app_scan();                          
+    ble_hs_id_infer_auto(0, &ble_addr_type); // Determines the best address type automatically                     
 }
 
 /**

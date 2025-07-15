@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdint.h>
 #include "freertos/FreeRTOS.h"
+#include "ble_client.h"
 
 void cli_task() {
     char line[CLI_BUF_SIZE];
@@ -83,6 +84,7 @@ void cli_task() {
             printf("Commands:\n");
             printf("  help    - Show this message\n");
             printf("  info    - Show heap info\n");
+            printf("  ble_scan    - Start BLE scanning from Client\n");
             printf("  restart - Reboot the chip\n");
         } else if (strcmp(line, "info") == 0) {
             printf("Heap: %" PRIu32 " bytes\n", esp_get_free_heap_size());
@@ -90,7 +92,10 @@ void cli_task() {
             printf("Restarting...\n");
             vTaskDelay(500 / portTICK_PERIOD_MS);
             esp_restart();
-        } else if (strlen(line) > 0) {
+        } else if (strcmp(line, "ble_scan") == 0) {
+            printf("Starting BLE scan...\n");
+            ble_app_scan(5000); // Scan for 5 seconds
+        } else {
             printf("Unknown command: %s\n", line);
         }
     }
