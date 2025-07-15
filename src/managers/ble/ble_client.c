@@ -8,7 +8,7 @@
  * By client, we mean that this device scans for and connects to BLE servers (like sensors or peripherals).
  * The client can discover services and characteristics exposed by servers and perform read or write operations on them.
  */
-#include "ble_client.h"                    // Project-specific BLE header
+#include "ble_client.h"
 #include <stdio.h>
 #include "esp_event.h"
 #include "esp_log.h"
@@ -21,7 +21,8 @@
 #include "nimble/nimble_port_freertos.h"
 #include "services/gap/ble_svc_gap.h"
 #include "sdkconfig.h"
-#include "tasks.h"                         // Project-specific task management
+#include "tasks.h"
+#include "utils_comms.h"
 
 static const char *TAG = "BLE_CLIENT";
 
@@ -48,10 +49,8 @@ static int ble_gap_event(struct ble_gap_event *event, void *arg)
         {
             // Format the discovered device's MAC address as a string
             char addr_str[18];
-            snprintf(addr_str, sizeof(addr_str), "%02x:%02x:%02x:%02x:%02x:%02x",
-                event->disc.addr.val[0], event->disc.addr.val[1],
-                event->disc.addr.val[2], event->disc.addr.val[3],
-                event->disc.addr.val[4], event->disc.addr.val[5]);
+            addr_str = mac_bytes_to_str(event->disc.addr.val)
+
             // Log the MAC address and RSSI (signal strength)
             ESP_LOGI("GAP", "GAP EVENT DISCOVERY: %s (%d)", addr_str, event->disc.rssi);
 

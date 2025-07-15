@@ -13,6 +13,7 @@ set(
     ${CMAKE_SOURCE_DIR}/src/managers/uart
     ${CMAKE_SOURCE_DIR}/src/managers/nvs
     ${CMAKE_SOURCE_DIR}/src/managers/ble
+    ${CMAKE_SOURCE_DIR}/src/managers/utils
 )
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
