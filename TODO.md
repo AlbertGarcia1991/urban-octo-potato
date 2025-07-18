@@ -1,7 +1,6 @@
 * WP1
     * BLE
         * Create ble_common to create shared dependencies between client and server
-        * Add compiler flag to set current build as client or server
         * Enable ble_scan only if current device is client
         * Add notify channel on server with dummy periodic data
         * Connect 1 client to 1 server and subscribe to the latter notify channel
