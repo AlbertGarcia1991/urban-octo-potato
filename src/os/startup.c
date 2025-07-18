@@ -30,7 +30,15 @@ void run_startup_procedures(void) {
     nvs_manager_init();
 
     // Initialize BLE client (can be conditional based on build config)
+#if defined(BUILD_SERVER)
+    ble_nimble_server_init();
+#elif defined(BUILD_CLIENT)
     ble_nimble_client_init();
+#elif defined(BUILD_SERVER) && defined(BUILD_CLIENT)
+    "Multiple definitions for BUILD_TARGET"
+#else
+    #error "You must define compiler parameter BUILD_TARGET to either SERVER or CLIENT to succesfully"
+#endif
 
     ESP_LOGI(TAG, "System startup procedures completed");
 }

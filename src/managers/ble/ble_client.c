@@ -49,7 +49,7 @@ static int ble_gap_event(struct ble_gap_event *event, void *arg)
         {
             // Format the discovered device's MAC address as a string
             char addr_str[18];
-            addr_str = mac_bytes_to_str(event->disc.addr.val)
+            mac_bytes_to_str(event->disc.addr.val, addr_str);
 
             // Log the MAC address and RSSI (signal strength)
             ESP_LOGI("GAP", "GAP EVENT DISCOVERY: %s (%d)", addr_str, event->disc.rssi);

@@ -98,7 +98,9 @@ void cli_task(void) {
             printf("Commands:\n");
             printf("  help    - Show this message\n");
             printf("  info    - Show heap info\n");
+#if defined(BUILD_CLIENT)
             printf("  ble_scan    - Start BLE scanning from Client\n");
+#endif
             printf("  restart - Reboot the chip\n");
         } else if (strcmp(line, "info") == 0) {
             printf("Heap: %" PRIu32 " bytes\n", esp_get_free_heap_size());
@@ -106,10 +108,14 @@ void cli_task(void) {
             printf("Restarting...\n");
             vTaskDelay(500 / portTICK_PERIOD_MS);
             esp_restart();
-        } else if (strcmp(line, "ble_scan") == 0) {
+        }
+#if defined(BUILD_CLIENT)
+        else if (strcmp(line, "ble_scan") == 0) {
             printf("Starting BLE scan...\n");
             ble_app_scan(5000); // Scan for 5 seconds
-        } else {
+        }
+#endif
+        else {
             printf("Unknown command: %s\n", line);
         }
     }

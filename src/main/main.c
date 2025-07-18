@@ -13,6 +13,24 @@
 
 static const char *TAG = "MAIN";
 
+typedef enum {
+    UNKNOWN,
+    SERVER,
+    CLIENT
+} HardwareType_t;
+
+char* getHwTypeAsString(HardwareType_t hw_type) {
+    switch (hw_type)
+    {
+    case CLIENT:
+        return "CLIENT";
+    case SERVER:
+        return "SERVER";
+    default:
+        return "UNKNOWN";
+    }
+}
+
 /**
  * @brief Main application entry point.
  *
@@ -21,7 +39,13 @@ static const char *TAG = "MAIN";
  */
 void app_main(void)
 {
-    ESP_LOGI(TAG, "Hardware started");
+    HardwareType_t hw_type = UNKNOWN;
+#if defined(BUILD_SERVER)
+        hw_type = SERVER;
+#elif defined(BUILD_CLIENT)
+        hw_type = CLIENT;
+#endif
+    ESP_LOGW(TAG, "Hardware started as %s", getHwTypeAsString(hw_type));
 
     // Run startup procedures (UART, NVS, BLE, etc.)
     run_startup_procedures();
