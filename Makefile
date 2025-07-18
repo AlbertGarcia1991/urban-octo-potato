@@ -1,4 +1,4 @@
-.PHONY: build flash monitor clean all server client
+.PHONY: build flash monitor clean all build_server build_client all_server all_client
 
 DEBIAN_PORT := /dev/ttyUSB0
 MAC_PORT := $(shell ls /dev/cu.usbserial* 2>/dev/null | head -n 1)
@@ -12,18 +12,11 @@ endif
 build:
 	idf.py build
 
-server:
-	cp Makefile MakefileTemp
-	cmake -DBUILD_TARGET=SERVER .
-	idf.py build
-	cp MakefileTemp Makefile
-	rm MakefileTemp
+build_server:
+	idf.py build -DBUILD_TARGET=SERVER
 
-client:
-	cp Makefile MakefileTemp
-	cmake -DBUILD_TARGET=CLIENT .
-	cp MakefileTemp Makefile
-	rm MakefileTemp
+build_client:
+	idf.py build -DBUILD_TARGET=CLIENT
 
 flash:
 	idf.py -p $(CURR_PORT) flash
@@ -35,3 +28,7 @@ clean:
 	idf.py fullclean
 
 all: build flash monitor
+
+all_server: build_server flash monitor
+
+all_client: build_client flash monitor

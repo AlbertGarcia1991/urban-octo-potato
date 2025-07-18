@@ -52,7 +52,7 @@ static int ble_gap_event(struct ble_gap_event *event, void *arg)
             mac_bytes_to_str(event->disc.addr.val, addr_str);
 
             // Log the MAC address and RSSI (signal strength)
-            ESP_LOGI("GAP", "GAP EVENT DISCOVERY: %s (%d)", addr_str, event->disc.rssi);
+            ESP_LOGI("GAP", "GAP EVENT DISCOVERY %s (%d)", addr_str, event->disc.rssi);
 
             // Parse the advertisement data to extract fields like the device name
             ble_hs_adv_parse_fields(&fields, event->disc.data, event->disc.length_data);
